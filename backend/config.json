@@ -1,0 +1,10 @@
+{
+    "dbName": "pazaak",
+    "dbHost": "localhost",
+    "dbUser": "root",
+    "dbPassword": "password",
+    "port": 8080,
+    "jwtSecret": "hkljvelkfanikhneakhnfklehbfzlkhgblkhgblkzhrbkzhrb or whatever you want I guess",
+    "root": "/absolute/path/to/pazaak",
+    "corsOrigin": "http://localhost:8080"
+}
