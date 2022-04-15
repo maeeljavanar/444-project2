@@ -1,10 +1,10 @@
 {
-    "dbName": "pazaak",
+    "dbName": "books",
     "dbHost": "localhost",
     "dbUser": "root",
     "dbPassword": "password",
     "port": 8080,
     "jwtSecret": "hkljvelkfanikhneakhnfklehbfzlkhgblkhgblkzhrbkzhrb or whatever you want I guess",
-    "root": "/absolute/path/to/pazaak",
+    "root": "/absolute/path/to/this/directory/",
     "corsOrigin": "http://localhost:8080"
 }
