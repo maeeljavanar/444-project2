@@ -69,8 +69,10 @@ router.get('/books', function(req, res) {
 
 function generateToken(req, userid) {
   
-  var token = jwt.sign({
-      "name": req.body.username
+  if(await user.createSessionToken(userid)) {
+    var token = jwt.sign({
+      "name": req.body.username,
+      "token": user.createSessionToken(userid)
     }, config.jwtSecret,
     {
       subject: `${userid}`,
@@ -78,6 +80,9 @@ function generateToken(req, userid) {
     });
 
   return token;
+  } else {
+    return false;
+  }
 
 }
 
@@ -85,7 +90,11 @@ function validateToken(token) {
 
   try {
     var decoded = jwt.verify(token, config.jwtSecret);
-    return decoded;
+    if(decoded) {
+      user.validateToken(decoded.token);
+    } else {
+      return false;
+    }
   } catch(err) {
     console.log(err);
     return false;
