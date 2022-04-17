@@ -45,12 +45,13 @@ exports.createAccount = async function(username, password, callback) {
     callback(userid);
 }
 
-exports.createSessionToken = async function(userid) {
+exports.createSessionToken = async function(userid, callback) {
     let token = await createToken();
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     let expiration = tomorrow.toISOString().slice(0, 19).replace('T', ' ');
     let result = await userdb.insertToken(userid, token, expiration)
+    callback(result);
 }
 
 exports.validateToken = async function(token) {

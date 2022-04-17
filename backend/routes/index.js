@@ -21,8 +21,9 @@ router.post('/createAccount', function(req, res) {
 router.post('/login', function(req, res, next) {
   user.login(req.body.username, req.body.password, userid => {
     if(userid) {
-      var token = generateToken(req, userid);
-      res.json({"success": true, "token": token});
+      generateToken(req, userid, token => {
+        res.json({"success": true, "token": token});
+      });
     } else {
       res.json({"success": false});
     }
@@ -67,22 +68,24 @@ router.get('/books', function(req, res) {
   }
 });
 
-function generateToken(req, userid) {
+function generateToken(req, userid, callback) {
   
-  if(await user.createSessionToken(userid)) {
-    var token = jwt.sign({
-      "name": req.body.username,
-      "token": user.createSessionToken(userid)
-    }, config.jwtSecret,
-    {
-      subject: `${userid}`,
-      expiresIn: '24h'
-    });
-
-  return token;
-  } else {
-    return false;
-  }
+  user.createSessionToken(userid, result => {
+    if(success) {
+      var token = jwt.sign({
+        "name": req.body.username,
+        "token": user.createSessionToken(userid)
+      }, config.jwtSecret,
+      {
+        subject: `${userid}`,
+        expiresIn: '24h'
+      });
+  
+    callback(token);
+    } else {
+      callback(false);
+    }
+  })
 
 }
 
