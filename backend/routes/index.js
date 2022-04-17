@@ -19,6 +19,7 @@ router.post('/createAccount', function(req, res) {
 });
 
 router.post('/login', function(req, res, next) {
+  console.log("hi")
   user.login(req.body.username, req.body.password, userid => {
     if(userid) {
       generateToken(req, userid, token => {
