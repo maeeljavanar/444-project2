@@ -72,10 +72,10 @@ router.get('/books', function(req, res) {
 function generateToken(req, userid, callback) {
   
   user.createSessionToken(userid, result => {
-    if(success) {
+    if(result) {
       var token = jwt.sign({
         "name": req.body.username,
-        "token": user.createSessionToken(userid)
+        "token": result
       }, config.jwtSecret,
       {
         subject: `${userid}`,
@@ -86,7 +86,7 @@ function generateToken(req, userid, callback) {
     } else {
       callback(false);
     }
-  })
+  });
 
 }
 

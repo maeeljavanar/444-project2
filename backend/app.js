@@ -38,7 +38,7 @@ app.use(function(err, req, res, next) {
 });
 
 http.createServer(app).listen(config.port, () => {
-  console.log(`Pazaak listening at http://localhost:${config.port}`)
+  console.log(`Books listening at http://localhost:${config.port}`)
 });
 
 module.exports = app;

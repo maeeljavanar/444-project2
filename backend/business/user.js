@@ -1,13 +1,14 @@
 var userdb = require('../data/userDB.js');
-const argon2 = require('argon2');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const tokenLength = 20;
 
 async function hashPassword(password) {
-    return await argon2.hash(password);
+    return await bcrypt.hash(password, saltRounds);
 }
 
 async function verifyPassword(storedHash, password, username, callback) {
-    if (await argon2.verify(storedHash, password)) {
+    if (await bcrypt.compare(password, storedHash)) {
         let userid = await userdb.getId(username);
         callback(userid);
     } else {
