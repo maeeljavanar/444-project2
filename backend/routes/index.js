@@ -10,8 +10,9 @@ var jwt = require('jsonwebtoken');
 router.post('/createAccount', function(req, res) {
   user.createAccount(req.body.username, req.body.password, userid => {
     if(userid != undefined) {
-      var token = generateToken(req, userid);
-      res.json({"success": true, "token": token});
+      generateToken(req, userid, token => {
+        res.json({"success": true, "token": token});
+      });
     } else {
       res.json({"success": false});
     }
