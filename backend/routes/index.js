@@ -2,6 +2,7 @@ const config = require('../config.json');
 var express = require('express');
 var router = express.Router();
 var user = require('../business/user.js');
+var book = require('../business/book.js');
 var jwt = require('jsonwebtoken');
 
 /**
@@ -62,12 +63,9 @@ router.delete('/book', function(req, res) {
 
 //get all
 router.get('/books', function(req, res) {
-  let requestJWT = validateToken(req.body.token);
-  if(requestJWT) {
-    //do the thing
-  } else {
-    res.send(401, 'Unauthorized');
-  }
+  book.getAllBooks(books => {
+    res.json(books);
+  });
 });
 
 function generateToken(req, userid, callback) {
