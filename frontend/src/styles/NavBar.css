@@ -1,0 +1,15 @@
+.Bar {
+    background-color: white;
+}
+
+.LogoImage {
+    width: 50px;
+    max-width: 100%;
+    height: auto;
+}
+
+.Logo {
+    font-size: 3.5em;
+    font-family: 'Cormorant', cursive;
+    color: #3CC3BD;
+}
