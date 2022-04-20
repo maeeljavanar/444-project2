@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const config = require('./config.json');
+var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var https = require('https');
 var http = require('http');
@@ -21,8 +22,25 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // setup the logger
+app.use(function pullSubFromJWTForLogging (req, res, next) {
+  if(req.body.token) {
+    var decoded = jwt.verify(req.body.token, config.jwtSecret)
+    req.userid = decoded.sub;
+    req.username = decoded.name;
+  }
+  next();
+});
+
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
-app.use(logger('combined', { stream: accessLogStream }))
+app.use(logger(':date[iso] :method :url :status User :id :username :response-time', { stream: accessLogStream }))
+
+logger.token('id', function(req) {
+  return req.userid;
+});
+
+logger.token('username', function(req) {
+  return req.username;
+});
 
 app.use('/', indexRouter);
 
