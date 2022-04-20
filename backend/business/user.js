@@ -52,12 +52,11 @@ exports.createSessionToken = async function(userid, callback) {
     tomorrow.setDate(tomorrow.getDate() + 1);
     let expiration = tomorrow.toISOString().slice(0, 19).replace('T', ' ');
     let result = await userdb.insertToken(userid, token, expiration)
-    callback(result);
+    callback(token);
 }
 
 exports.validateToken = async function(token) {
     let user = await userdb.getUserByToken(token);
-    console.log(JSON.stringify(user));
     let now = new Date();
     let then = new Date(user.expiration);
     if(then > now) {

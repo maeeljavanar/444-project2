@@ -23,12 +23,14 @@ exports.updateBook = async function(book, callback) {
 
     //id is required
     if(!book.bookid) {
+        console.log("Update book request missing bookid");
         callback(false);
         return;
     }
 
     //there is nothing to update if only id is included
     if(Object.keys(book).length < 2) {
+        console.log("Update book request book object has 1 or fewer keys: ", JSON.stringify(book));
         callback(false);
         return;
     }

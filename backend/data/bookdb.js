@@ -6,7 +6,7 @@ exports.getAllBooks = async function() {
 }
 
 exports.getBookById = async function(bookid) {
-    var books = await database.executeQuery("SELECT bookid, title, description, isbn, pages, year, publisher, checkedoutby, u.username as checkedoutbyname FROM book LEFT JOIN user as u ON book.checkedoutby = u.userid WHERE bookid = ?;", [bookid]);
+    var book = await database.executeQuery("SELECT bookid, title, description, isbn, pages, year, publisher, checkedoutby, u.username as checkedoutbyname FROM book LEFT JOIN user as u ON book.checkedoutby = u.userid WHERE bookid = ?;", [bookid]);
     return book[0];
 }
 
