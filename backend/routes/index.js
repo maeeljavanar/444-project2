@@ -36,7 +36,26 @@ router.post('/login', function(req, res, next) {
 router.post('/book', function(req, res) {
   let requestJWT = validateToken(req.body.token);
   if(requestJWT) {
-    //do the thing
+    book.addBook({
+      "title": req.body.title,
+      "description": req.body.description,
+      "isbn": req.body.isbn,
+      "pages": req.body.pages,
+      "year": req.body.year,
+      "publisher": req.body.publisher
+    }, success => {
+      if(success) {
+        res.json({
+          "success": true,
+          "message": "Book was successfully deleted"
+        });
+      } else {
+        res.json({
+          "success": false,
+          "message": "An error occured deleting book. View server for more details."
+        });
+      }
+    });
   } else {
     res.send(401, 'Unauthorized');
   }
@@ -45,20 +64,86 @@ router.post('/book', function(req, res) {
 router.put('/book', function(req, res) {
   let requestJWT = validateToken(req.body.token);
   if(requestJWT) {
-    //do the thing
+    if(req.query.bookid) {
+      let book = {};
+
+      //add all included params to book object
+      if(req.body.title) {
+        book.title = req.body.title;
+      }
+      if(req.body.description) {
+        book.description = req.body.description;
+      }
+      if(req.body.isbn) {
+        book.isbn = req.body.isbn;
+      }
+      if(req.body.pages) {
+        book.pages = req.body.pages;
+      }
+      if(req.body.year) {
+        book.year = req.body.year;
+      }
+      if(req.body.publisher) {
+        book.publisher = req.body.publisher;
+      }
+
+      book.updateBook(book, success => {
+        if(success) {
+          res.json({
+            "success": true,
+            "message": "Book was successfully deleted"
+          });
+        } else {
+          res.json({
+            "success": false,
+            "message": "An error occured deleting book. View server for more details."
+          });
+        }
+      });
+    } else {
+      res.json({"error": "bookid is required"});
+    }
+  } else {
+    res.send(401, 'Unauthorized');
+  }
+});
+
+router.delete('/book', function(req, res) {
+  let requestJWT = validateToken(req.body.token);
+  if(requestJWT) {
+    if(req.query.bookid) {
+      book.deleteBook(req.query.bookid, success => {
+        if(success) {
+          res.json({
+            "success": true,
+            "message": "Book was successfully deleted"
+          });
+        } else {
+          res.json({
+            "success": false,
+            "message": "An error occured deleting book. View server for more details."
+          });
+        }
+      });
+    } else {
+      res.json({"error": "bookid is required"});
+    }
   } else {
     res.send(401, 'Unauthorized');
   }
 });
 
 //get one
-router.delete('/book', function(req, res) {
-  let requestJWT = validateToken(req.body.token);
-  if(requestJWT) {
-    //do the thing
+router.get('/book', function(req, res) {
+
+  if(req.query.bookid) {
+    book.getBook(req.query.bookid, books => {
+      res.json(books);
+    });
   } else {
-    res.send(401, 'Unauthorized');
+    res.json({"error": "bookid is required"});
   }
+  
 });
 
 //get all
