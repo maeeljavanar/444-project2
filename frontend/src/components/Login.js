@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import '../styles/Bootstrap.scss';
 import '../styles/Theme.css';
@@ -6,18 +6,16 @@ import '../styles/Login.css';
 import Logo from "../assets/LibraryLogo.png";
 import ModalMessage from './Modal';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-import  {UserContext} from '../auth/UserContext'
-import jwtDecode from 'jwt-decode';
 
 export default function Login() {
     // Declarations
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState("");
-    const [user, setUser] = useContext(UserContext);
+    const sendModalData = (value) => {
+        setShow(value)
+    }
 
     // Run on document load
     useEffect(() => {
@@ -38,22 +36,27 @@ export default function Login() {
                 password: password
             });
             let token = response.data.token;
-            localStorage.setItem("token", JSON.stringify(token))
-            setUser(jwtDecode(token));
-            console.log(user, token)
+            if(token) {
+                localStorage.setItem("token", token)
+                window.location.reload();
+            } else {
+                setMessage("Login Failed. Try Again!")
+                setShow(true);
+            }
+            // setUser(jwtDecode(token));
+            // console.log(user, token)
             //setToken(token)
-            // window.location.reload(false);
         } catch (error) {
             // In case of an error open a model with the message that
             // the login failed.
             console.log(error);
             setMessage("Login Failed. Try Again!")
-            setShow(!show);
+            setShow(true);
         }
     }
     return (
         <div className="all">
-            {show ? <ModalMessage message={message} show={show}/> : null}
+            {show ? <ModalMessage message={message} show={show} sendModalData={sendModalData}/> : null}
             <Form className="primary LoginForm" onSubmit={handleLogin}>
                 <Container fluid>
                     <Row className="justify-content-md-center">

@@ -2,7 +2,7 @@
     "dbName": "books",
     "dbHost": "localhost",
     "dbUser": "root",
-    "dbPassword": "password",
+    "dbPassword": "student",
     "port": 8080,
     "jwtSecret": "hkljvelkfanikhneakhnfklehbfzlkhgblkhgblkzhrbkzhrb or whatever you want I guess",
     "root": "/absolute/path/to/this/directory/",
