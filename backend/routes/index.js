@@ -35,7 +35,53 @@ router.post('/login', function(req, res, next) {
 router.post('/book', function(req, res) {
   let requestJWT = validateToken(req.body.token);
   if(requestJWT) {
-    //do the thing
+
+    let newBook = {};
+
+    //add all included params to book object
+    if(req.body.title) {
+      newBook.title = req.body.title;
+    } else {
+      newBook.title = null;
+    }
+    if(req.body.description) {
+      newBook.description = req.body.description;
+    }else {
+      newBook.description = null;
+    }
+    if(req.body.isbn) {
+      newBook.isbn = req.body.isbn;
+    }else {
+      newBook.isbn = null;
+    }
+    if(req.body.pages) {
+      newBook.pages = req.body.pages;
+    }else {
+      newBook.pages = null;
+    }
+    if(req.body.year) {
+      newBook.year = req.body.year;
+    }else {
+      newBook.year = null;
+    }
+    if(req.body.publisher) {
+      newBook.publisher = req.body.publisher;
+    }else {
+      newBook.publisher = null;
+    }
+    book.addBook(newBook, success => {
+      if(success) {
+        res.json({
+          "success": true,
+          "message": "Book was successfully added"
+        });
+      } else {
+        res.json({
+          "success": false,
+          "message": "An error occured adding book. View server for more details."
+        });
+      }
+    });
   } else {
     res.send(401, 'Unauthorized');
   }
@@ -44,20 +90,86 @@ router.post('/book', function(req, res) {
 router.put('/book', function(req, res) {
   let requestJWT = validateToken(req.body.token);
   if(requestJWT) {
-    //do the thing
+    if(req.body.bookid) {
+      let updateBook = {bookid: req.body.bookid};
+
+      //add all included params to book object
+      if(req.body.title) {
+        updateBook.title = req.body.title;
+      }
+      if(req.body.description) {
+        updateBook.description = req.body.description;
+      }
+      if(req.body.isbn) {
+        updateBook.isbn = req.body.isbn;
+      }
+      if(req.body.pages) {
+        updateBook.pages = req.body.pages;
+      }
+      if(req.body.year) {
+        updateBook.year = req.body.year;
+      }
+      if(req.body.publisher) {
+        updateBook.publisher = req.body.publisher;
+      }
+
+      book.updateBook(updateBook, success => {
+        if(success) {
+          res.json({
+            "success": true,
+            "message": "Book was successfully updated"
+          });
+        } else {
+          res.json({
+            "success": false,
+            "message": "An error occured updating book. View server for more details."
+          });
+        }
+      });
+    } else {
+      res.json({"error": "bookid is required"});
+    }
+  } else {
+    res.send(401, 'Unauthorized');
+  }
+});
+
+router.delete('/book', function(req, res) {
+  let requestJWT = validateToken(req.body.token);
+  if(requestJWT) {
+    if(req.body.bookid) {
+      book.deleteBook(req.body.bookid, success => {
+        if(success) {
+          res.json({
+            "success": true,
+            "message": "Book was successfully deleted"
+          });
+        } else {
+          res.json({
+            "success": false,
+            "message": "An error occured deleting book. View server for more details."
+          });
+        }
+      });
+    } else {
+      res.json({"error": "bookid is required"});
+    }
   } else {
     res.send(401, 'Unauthorized');
   }
 });
 
 //get one
-router.delete('/book', function(req, res) {
-  let requestJWT = validateToken(req.body.token);
-  if(requestJWT) {
-    //do the thing
+router.get('/book', function(req, res) {
+
+  if(req.query.bookid) {
+    book.getBook(req.query.bookid, books => {
+      res.json(books);
+    });
   } else {
-    res.send(401, 'Unauthorized');
+    res.json({"error": "bookid is required"});
   }
+  
 });
 
 //get all
@@ -93,7 +205,7 @@ function validateToken(token) {
   try {
     var decoded = jwt.verify(token, config.jwtSecret);
     if(decoded) {
-      user.validateToken(decoded.token);
+      return user.validateToken(decoded.token);
     } else {
       return false;
     }
