@@ -69,6 +69,11 @@ router.post('/book', function(req, res) {
     }else {
       newBook.publisher = null;
     }
+    if(req.body.checkedoutby) {
+      newBook.checkedoutby = req.body.checkedoutby;
+    }else {
+      newBook.checkedoutby = null;
+    }
     book.addBook(newBook, success => {
       if(success) {
         res.json({
@@ -111,6 +116,11 @@ router.put('/book', function(req, res) {
       }
       if(req.body.publisher) {
         updateBook.publisher = req.body.publisher;
+      }
+      if(req.body.checkedoutby) {
+        updateBook.checkedoutby = req.body.checkedoutby;
+      } else if(req.body.checkedoutby === null) {
+        updateBook.checkedoutby = null;
       }
 
       book.updateBook(updateBook, success => {
