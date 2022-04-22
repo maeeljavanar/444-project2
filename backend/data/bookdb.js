@@ -18,7 +18,7 @@ exports.insertBook = async function(book) {
     } else {
         bookid += 1;
     }
-    var response = await database.executeQuery("INSERT INTO book(bookid, title, description, isbn, pages, year, publisher) VALUES(?, ?, ?, ?, ?, ?, ?)", [bookid, book.title, book.description, book.isbn, book.pages, book.year, book.publisher]);
+    var response = await database.executeQuery("INSERT INTO book(bookid, title, description, isbn, pages, year, publisher, checkedoutby) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", [bookid, book.title, book.description, book.isbn, book.pages, book.year, book.publisher, book.checkedoutby]);
     if(response && response.affectedRows == 1) {
         return bookid;
     } else {
@@ -73,6 +73,11 @@ exports.updateBook = async function(book) {
     if(book.publisher) {
         sql += "publisher = ?, ";
         params.push(book.publisher);
+    }
+
+    if(book.checkedoutby || book.checkedoutby === null) {
+        sql += "checkedoutby = ?, ";
+        params.push(book.checkedoutby);
     }
 
     //remove trailing ,
