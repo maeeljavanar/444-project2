@@ -1,4 +1,26 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-.List {
-    background-color: white;
+
+.AddBook {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 1.5em;
+    margin-top: 3%;
+    box-shadow: 6px 8px 4px rgb(190, 188, 188);
+}
+
+.Books {
+    width: 75%;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 1.5em;
+    margin-top: 3%;
+    box-shadow: 6px 8px 4px rgb(190, 188, 188);
+}
+
+.Subject {
+    font-size: 3em;
+    color: #3CC3BD;
+    justify-content: space-between;
+    text-align: center;
 }

@@ -9,7 +9,13 @@
 }
 
 .Logo {
-    font-size: 3.5em;
+    font-size: 3em;
     font-family: 'Cormorant', cursive;
+    color: #3CC3BD;
+    justify-content: space-between;
+}
+
+.Logout {
+    font-size: 3em;
     color: #3CC3BD;
 }

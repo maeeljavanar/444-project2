@@ -4,11 +4,11 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 function App() {
+  const token = localStorage.getItem("token");
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Login />}/>
-        <Route path="/list" element={<Dashboard />}/>
+        {token ? <Route exact path="/" element={<Dashboard />}/> : <Route exact path="/" element={<Login />}/> }
       </Routes>
     </Router>
   );
