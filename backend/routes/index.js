@@ -145,6 +145,7 @@ router.put('/book', function(req, res) {
 });
 
 router.delete('/book', function(req, res) {
+  console.log(req.body.token)
   let requestJWT = validateToken(req.body.token);
   if(requestJWT) {
     if(req.body.bookid) {

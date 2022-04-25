@@ -6,6 +6,7 @@ import '../styles/Login.css';
 import Logo from "../assets/LibraryLogo.png";
 import ModalMessage from './Modal';
 import axios from "axios";
+import jwtDecode from 'jwt-decode';
 
 export default function Login() {
     // Declarations
@@ -31,21 +32,24 @@ export default function Login() {
     async function handleLogin(event) {
         event.preventDefault();
         try {
+            // await axios.post("http://localhost:8080/createAccount", {
+            //     username: "test2",
+            //     password: "Password123"
+            // });
             const response = await axios.post("http://localhost:8080/login", {
                 username: username,
                 password: password
             });
             let token = response.data.token;
             if(token) {
-                localStorage.setItem("token", token)
+                localStorage.setItem("token", token);
+                localStorage.setItem("userID", jwtDecode(token).sub);
+                localStorage.setItem("exp", jwtDecode(token).exp);
                 window.location.reload();
             } else {
                 setMessage("Login Failed. Try Again!")
                 setShow(true);
             }
-            // setUser(jwtDecode(token));
-            // console.log(user, token)
-            //setToken(token)
         } catch (error) {
             // In case of an error open a model with the message that
             // the login failed.

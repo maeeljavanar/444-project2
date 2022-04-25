@@ -14,7 +14,7 @@ const ModalMessage = ({message, show, sendModalData}) => {
     }
     return (<Modal show={visible} onHide={handleClose}>
         <Modal.Header closeButton className="secondary">
-            <Modal.Title>Error</Modal.Title>
+            <Modal.Title>Message</Modal.Title>
         </Modal.Header>
         <Modal.Body>{text}</Modal.Body>
         <Modal.Footer className="tertiary">
