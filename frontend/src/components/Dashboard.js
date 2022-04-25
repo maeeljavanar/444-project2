@@ -106,7 +106,6 @@ export default function Dashboard() {
 
     async function deleteBook(id) {
         try {
-            console.log("Token: ", token)
             await axios.delete("http://localhost:8080/book", {
                 data: {
                     token: token,
