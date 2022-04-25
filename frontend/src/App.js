@@ -5,10 +5,11 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   const token = localStorage.getItem("token");
+  const exp = localStorage.getItem("exp");
   return (
     <Router>
       <Routes>
-        {token ? <Route exact path="/" element={<Dashboard />}/> : <Route exact path="/" element={<Login />}/> }
+        { token && Date.now() <= exp * 1000 ? <Route exact path="/" element={<Dashboard />}/> : <Route exact path="/" element={<Login />}/> }
       </Routes>
     </Router>
   );
