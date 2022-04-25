@@ -11,7 +11,6 @@ import { AiOutlinePlus, AiFillDelete, AiTwotoneEdit } from 'react-icons/ai';
 export default function Dashboard() {
     // Declarations
     const [books, setBooks] = useState([]);
-    const [bookCount, setBookCount] = useState(0);
     const token = localStorage.getItem("token");
     const userID = localStorage.getItem("userID");
     const idRef = useRef([]);
@@ -41,7 +40,7 @@ export default function Dashboard() {
 
     async function getBooks() {
         try {
-            const response = await axios.get("http://localhost:8080/books", {
+            const response = await axios.get("http://192.168.44.12:8080/books", {
                 token: token
             })
             setBooks(response.data);
@@ -54,7 +53,7 @@ export default function Dashboard() {
 
     async function addBook() {
         try {
-            await axios.post("http://localhost:8080/book", {
+            await axios.post("http://192.168.44.12:8080/book", {
                 token: token,
                 title: titleRef.current[0].value,
                 description: descriptionRef.current[0].value,
@@ -62,7 +61,6 @@ export default function Dashboard() {
                 pages: pagesRef.current[0].value,
                 year: yearRef.current[0].value,
                 publisher: publisherRef.current[0].value,
-                checkedoutby: checkedOutByRef.current[0].value
             })
             titleRef.current[0].value = '';
             descriptionRef.current[0].value = '';
@@ -82,7 +80,7 @@ export default function Dashboard() {
 
     async function editBook(id) {
         try {
-            await axios.put("http://localhost:8080/book", {
+            await axios.put("http://192.168.44.12:8080/book", {
                 token: token,
                 bookid: id,
                 title: titleRef.current[id].value,
@@ -106,7 +104,7 @@ export default function Dashboard() {
 
     async function deleteBook(id) {
         try {
-            await axios.delete("http://localhost:8080/book", {
+            await axios.delete("http://192.168.44.12:8080/book", {
                 data: {
                     token: token,
                     bookid: id
@@ -169,7 +167,6 @@ export default function Dashboard() {
                                 <Form.Control id="0-publisher" ref={el => { publisherRef.current[0] = el }} defaultValue='' />
                             </td>
                             <td>
-                                <Form.Control id="0-checkedoutby" ref={el => { checkedOutByRef.current[0] = el }} defaultValue={userID} />
                             </td>
                             <td>
                                 <Button onClick={addBook}><AiOutlinePlus /></Button>
