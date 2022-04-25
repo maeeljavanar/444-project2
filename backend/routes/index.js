@@ -119,7 +119,7 @@ router.put('/book', function(req, res) {
       }
       if(req.body.checkedoutby) {
         updateBook.checkedoutby = req.body.checkedoutby;
-      } else if(req.body.checkedoutby === null) {
+      } else if(req.body.checkedoutby === null || req.body.checkedoutby == '' || req.body.checkedoutby < 0) {
         updateBook.checkedoutby = null;
       }
 
