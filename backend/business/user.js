@@ -57,6 +57,9 @@ exports.createSessionToken = async function(userid, callback) {
 
 exports.validateToken = async function(token) {
     let user = await userdb.getUserByToken(token);
+    if(!user) {
+        return false;
+    }
     let now = new Date();
     let then = new Date(user.expiration);
     if(then > now) {
